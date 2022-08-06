@@ -1,10 +1,11 @@
 package com.upwork.product.category;
 
+import com.upwork.product.product.Product;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.UUID;
+import java.util.Set;
 
 @Entity
 @Table(name = "product_categories")
@@ -15,12 +16,15 @@ public class ProductCategory {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
         name = "UUID",
-        strategy = "org.hibernate.id.UUIDGenerator"
+        strategy = "uuid"
     )
-    private UUID id;
+    private String id;
 
     @Column(name = "name", nullable = false)
     private String name;
     private String description;
+
+    @OneToMany(mappedBy = "productCategory")
+    private Set<Product> products;
 
 }

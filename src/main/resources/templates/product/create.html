@@ -7,15 +7,32 @@
     <div layout:fragment="content">
         <h1 class="display-5 fw-bold">Create</h1>
         <p class="col-md-8 fs-4">Please fill up the form to create a product</p>
-        <form>
-            <div class="mb-3">
-                <label for="product-name" class="form-label">Product Name</label>
-                <input type="text" class="form-control" id="product-name" />
+        <form name="create-product" method="POST" th:action="${#mvc.url('store-product').build()}">
+            <div class="row g-3 mb-3">
+                <div class="col ">
+                    <label for="product-name" class="form-label">Product Name</label>
+                    <input name="name" type="text" class="form-control" id="product-name" />
+                </div>
+
+                <div class="col ">
+                    <label for="product-category" class="form-label">Product Category</label>
+                    <select name="productCategory" class="form-select"  id="product-category">
+                        <option selected>Select Category</option>
+                        <option th:each="productCategory: ${productCategories}"
+                                th:value="${productCategory.id}"
+                                th:text="${productCategory.name}"></option>
+                    </select>
+                </div>
+
+                <div class="col">
+                    <label for="formFile" class="form-label">Default file input example</label>
+                    <input class="form-control" type="file" id="formFile">
+                </div>
             </div>
 
             <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
+                <label for="description" class="form-label">Description</label>
+                <textarea name="description" class="form-control" id="description" rows="3"></textarea>
             </div>
 
             <button type="submit" class="btn btn-primary">Create</button>
