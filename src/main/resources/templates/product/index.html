@@ -28,14 +28,39 @@
                     <td th:text="${product.description}">@mdo</td>
                     <td >
                         <button type="button" class="btn btn-info">Edit</button>
-                        <button type="button" class="btn btn-danger">
+
+                        <a  data-title="Delete Product" data-bs-toggle="modal"
+                            data-bs-target="#deleteModal" class="btn btn-danger"
+                            data-message="Are you sure you want to delete the product?"
+                            th:data-href="@{/product/{id}/delete(id=${product.id})}"
+                            data-delete-token="${_csrf.parameterName}">
                             Delete
-                        </button>
+                        </a>
+
                     </td>
                 </tr>
 
             </tbody>
         </table>
+
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="message"></div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button   type="button" class="btn btn-danger btn-ok">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

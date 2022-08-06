@@ -5,16 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@RequestMapping("/product")
 @Controller
 public class ProductController {
 
@@ -25,7 +21,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping(value = "/", name = "index-product")
+    @GetMapping(value = "/product", name = "index-product")
     public ModelAndView index(){
         ModelAndView modelAndView = new ModelAndView("product/index.html");
         modelAndView.addObject("products", productService.getProducts());
@@ -33,7 +29,7 @@ public class ProductController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/create", name = "create-product")
+    @GetMapping(value = "/product/create", name = "create-product")
     public ModelAndView create() {
         List<ProductCategory> productCategories = productService.getProductCategories();
         ModelAndView modelAndView = new ModelAndView("product/create.html");
@@ -42,7 +38,7 @@ public class ProductController {
         return modelAndView;
     }
 
-    @PostMapping(value = "/", name = "store-product")
+    @PostMapping(value = "/product", name = "store-product")
     public ModelAndView store(@Valid @ModelAttribute() CreateProductRequest request,
                               BindingResult result,
                               ModelMap modelMap){
@@ -54,6 +50,18 @@ public class ProductController {
         this.productService.save(request);
         modelMap.addAttribute("message", "Product added successfully.");
         return new ModelAndView("redirect:/product/create", modelMap);
+    }
 
+    @GetMapping(value = "/product/{id}", name = "view-product")
+    public ModelAndView view(@PathVariable("id") String productId){
+
+    }
+
+    @DeleteMapping(value = "/product/{id}/delete", name = "delete-product")
+    public ModelAndView delete(@PathVariable("id") String productId, ModelMap model){
+        productService.delete(productId);
+
+        model.addAttribute("message", "Product deleted successfully.");
+        return new ModelAndView("redirect:/product", model);
     }
 }
