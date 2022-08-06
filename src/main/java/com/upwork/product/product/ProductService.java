@@ -24,6 +24,10 @@ public class ProductService {
         return categoryRepository.findAll();
     }
 
+    public List<Product> getProducts(){
+        return productRepository.findAll();
+    }
+
     public void save(CreateProductRequest createProductRequest) {
 
         ProductCategory productCategory = new ProductCategory();

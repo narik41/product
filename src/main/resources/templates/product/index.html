@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/base.html">
+
+<body>
+<div layout:fragment="content">
+    <h1 class="display-5 fw-bold">Product List</h1>
+    <p class="col-md-8 fs-4">Please fill up the form to create a product</p>
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">S.N</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <tr th:each="product: ${products}">
+                    <th scope="row">1</th>
+                    <td th:text="${product.name}"></td>
+                    <td >
+                        <span th:if="${product.productCategory}" th:text="${product.productCategory.name}"></span>
+                    </td>
+                    <td th:text="${product.description}">@mdo</td>
+                    <td >
+                        <button type="button" class="btn btn-info">Edit</button>
+                        <button type="button" class="btn btn-danger">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

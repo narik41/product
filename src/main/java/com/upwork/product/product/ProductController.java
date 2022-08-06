@@ -25,6 +25,14 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @GetMapping(value = "/", name = "index-product")
+    public ModelAndView index(){
+        ModelAndView modelAndView = new ModelAndView("product/index.html");
+        modelAndView.addObject("products", productService.getProducts());
+        modelAndView.addObject("title", "Product List");
+        return modelAndView;
+    }
+
     @GetMapping(value = "/create", name = "create-product")
     public ModelAndView create() {
         List<ProductCategory> productCategories = productService.getProductCategories();
@@ -38,10 +46,6 @@ public class ProductController {
     public ModelAndView store(@Valid @ModelAttribute() CreateProductRequest request,
                               BindingResult result,
                               ModelMap modelMap){
-        System.out.println("Store product");
-        System.out.println(result.hasErrors());
-        System.out.println(request.getProductCategory());
-        System.out.println(request.getName());
         if(result.hasErrors()){
             ModelAndView modelAndView = new ModelAndView("product/create.html");
             return modelAndView;
