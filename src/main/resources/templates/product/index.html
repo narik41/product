@@ -5,58 +5,61 @@
 
 <body>
 <div layout:fragment="content">
-    <h1 class="display-5 fw-bold">Product List</h1>
-    <p class="col-md-8 fs-4">Please fill up the form to create a product</p>
-    <div class="table-responsive">
-        <table class="table table-sm">
-            <thead>
-                <tr>
-                    <th scope="col">S.N</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Action</th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-                <tr th:each="product: ${products}">
-                    <th scope="row">1</th>
-                    <td th:text="${product.name}"></td>
-                    <td >
-                        <span th:if="${product.productCategory}" th:text="${product.productCategory.name}"></span>
-                    </td>
-                    <td th:text="${product.description}">@mdo</td>
-                    <td >
-                        <button type="button" class="btn btn-info">Edit</button>
+    <div class="container-fluid ">
+        <h1 class="display-5 fw-bold">Product List</h1>
+        <p class="col-md-8 fs-4">Please fill up the form to create a product</p>
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">S.N</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    <tr th:each="product: ${products}">
+                        <th scope="row">1</th>
+                        <td th:text="${product.name}"></td>
+                        <td >
+                            <span th:if="${product.productCategory}" th:text="${product.productCategory.name}"></span>
+                        </td>
+                        <td th:text="${product.description}">@mdo</td>
+                        <td >
+                            <a type="button" th:href="@{/product/{id}(id=${product.id})}" class="btn btn-sm btn-primary">View</a>
+                            <button type="button" class="btn btn-info btn-sm">Edit</button>
 
-                        <a  data-title="Delete Product" data-bs-toggle="modal"
-                            data-bs-target="#deleteModal" class="btn btn-danger"
-                            data-message="Are you sure you want to delete the product?"
-                            th:data-href="@{/product/{id}/delete(id=${product.id})}"
-                            data-delete-token="${_csrf.parameterName}">
-                            Delete
-                        </a>
+                            <a  data-title="Delete Product" data-bs-toggle="modal"
+                                data-bs-target="#deleteModal" class="btn btn-danger btn-sm"
+                                data-message="Are you sure you want to delete the product?"
+                                th:data-href="@{/product/{id}/delete(id=${product.id})}"
+                                data-delete-token="${_csrf.parameterName}">
+                                Delete
+                            </a>
 
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
 
-        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="message"></div>
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="message"></div>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button   type="button" class="btn btn-danger btn-ok">Delete</button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button   type="button" class="btn btn-danger btn-ok">Delete</button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -54,7 +54,12 @@ public class ProductController {
 
     @GetMapping(value = "/product/{id}", name = "view-product")
     public ModelAndView view(@PathVariable("id") String productId){
+        Product byId = productService.getById(productId);
 
+        ModelAndView modelAndView = new ModelAndView("product/view.html");
+        modelAndView.addObject("product", byId);
+        modelAndView.addObject("title", "Product Details");
+        return modelAndView;
     }
 
     @DeleteMapping(value = "/product/{id}/delete", name = "delete-product")
