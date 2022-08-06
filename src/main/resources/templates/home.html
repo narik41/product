@@ -9,7 +9,7 @@
         <div class="text-center">
             <h1 class="display-5 fw-bold">Welcome to Light Product</h1>
             <p class="col-md-8 fs-4">This is a demo product test</p>
-            <a th:href="@{/product/create}" class="btn btn-primary btn-lg">Create Product</a>
+            <a th:href="${#mvc.url('create-product').build()}" class="btn btn-primary btn-lg">Create Product</a>
         </div>
     </div>
 </div>

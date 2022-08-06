@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ProductController {
 
-    @GetMapping("/create")
+    @GetMapping(value = "/create", name = "create-product")
     public ModelAndView create() {
         ModelAndView modelAndView = new ModelAndView("product/create.html");
         return modelAndView;
