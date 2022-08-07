@@ -15,7 +15,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -124,12 +123,9 @@ public class ProductService {
      * @return
      */
     Product getById(String productId) {
-        Optional<Product> byId = productRepository.findById(productId);
-        if (byId.isEmpty()) {
-            return byId.orElse(new Product());
-        }
+        return productRepository.findById(productId)
+                .orElse(new Product());
 
-        return byId.get();
     }
 
     /**
@@ -148,10 +144,10 @@ public class ProductService {
         return false;
     }
 
-    CreateProductRequest getProductForEdit(String productId){
+    CreateProductRequest getProductForEdit(String productId) {
         Product byId = this.getById(productId);
         CreateProductRequest productRequest = new CreateProductRequest();
-        if(byId.getName() != null){
+        if (byId.getName() != null) {
             productRequest.setName(byId.getName());
             productRequest.setDescription(byId.getDescription());
             productRequest.setBrand(byId.getBrand().getId());
