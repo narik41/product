@@ -9,6 +9,7 @@ public class HomeController {
 
     @RequestMapping(value = "/", name = "home")
     public ModelAndView home(){
+
         ModelAndView modelAndView = new ModelAndView("home");
         modelAndView.addObject("title", "Light Product home");
         return modelAndView;
