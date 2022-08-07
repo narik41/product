@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title}"></title>
+    <style>
+        .btn-bd-primary {
+            --bs-btn-font-weight: 600;
+            --bs-btn-color: var(--bs-white);
+            --bs-btn-bg: var(--bd-violet);
+            --bs-btn-border-color: var(--bd-violet);
+            --bs-btn-border-radius: .5rem;
+            --bs-btn-hover-color: var(--bs-white);
+            --bs-btn-hover-bg: #{shade-color($bd-violet, 10%)};
+            --bs-btn-hover-border-color: #{shade-color($bd-violet, 10%)};
+            --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+            --bs-btn-active-color: var(--bs-btn-hover-color);
+            --bs-btn-active-bg: #{shade-color($bd-violet, 20%)};
+            --bs-btn-active-border-color: #{shade-color($bd-violet, 20%)};
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+<body>
+<div >
+    <header class="border-bottom">
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" th:href="${#mvc.url('home').build()}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" class="me-2" viewBox="0 0 118 94" role="img"><title>Bootstrap</title><path fill-rule="evenodd" clip-rule="evenodd" d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z" fill="currentColor"></path></svg>
+                    <span class="fs-4">Light Product</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" th:href="${#mvc.url('home').build()}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="${#mvc.url('create-product').build()}">Create Product</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="${#mvc.url('index-product').build()}">View Product</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="bg-light ">
+        <div layout:fragment="content"></div>
+    </div>
+
+    <footer id="sticky-footer" class="flex-shrink-0 py-4 bg-dark text-white-50">
+        <div class="container text-center">
+            <small>Copyright &copy; </small>
+        </div>
+    </footer>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+<script>
+     $('#deleteModal').on('show.bs.modal', function(e) {
+            var title = $(e.relatedTarget).data('title');
+            if (title != undefined)
+                $(this).find('.modal-title').html(title);
+
+            var message = $(e.relatedTarget).data('message');
+            if (message != undefined)
+                $(this).find('.modal-body #message').html(message);
+
+            $(this).find('.modal-footer .btn-ok').on('click', function () {
+                e.preventDefault();
+                var token = $(e.relatedTarget).data('delete-token');
+                var method = $(e.relatedTarget).data('method');
+                if (method == undefined)
+                    method = 'DELETE';
+
+                var form =$('<form>', {
+                            'method': 'POST',
+                            'action': $(e.relatedTarget).data('href')
+                        });
+
+                var token =$('<input>', {
+                            'type': 'hidden',
+                            'name': '_token',
+                            'value': token
+                        });
+
+                var hiddenInput = $('<input>', {
+                            'name': '_method',
+                            'type': 'hidden',
+                            'value': method
+                        });
+
+                form.append(token, hiddenInput).appendTo('body');
+                form.submit()
+            });
+        });
+</script>
+</body>
+</html>
