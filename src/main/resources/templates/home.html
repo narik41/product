@@ -8,7 +8,20 @@
     <div class="container d-flex align-items-center justify-content-center text-center h-100">
         <div class="p-3 p-md-5 m-md-3 ">
             <h1 class="mb-3">Welcome to Light Product</h1>
-            <h5 class="mb-4">This is a demo product test</h5>
+            <p class="mb-4">This is a demo product test</p>
+            <hr />
+            <div>
+                <h5> Used technology in this project.</h5>
+                <ul class="list-group">
+                    <li class="list-group-item active">Java</li>
+                    <li class="list-group-item">Spring boot</li>
+                    <li class="list-group-item">Postgres</li>
+                    <li class="list-group-item">Thymeleaf Template Engine</li>
+                    <li class="list-group-item">For UI : Bootstrap 5</li>
+                    <li class="list-group-item"><a href="https://github.com/narik41/product">Github Repo</a></li>
+                </ul>
+
+            </div>
             <a th:href="${#mvc.url('create-product').build()}" class="btn btn-outline-primary btn-lg">Create Product</a>
         </div>
     </div>
