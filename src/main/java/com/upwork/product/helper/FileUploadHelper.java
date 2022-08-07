@@ -18,7 +18,11 @@ public class FileUploadHelper {
     public String uploadFile(MultipartFile file) {
         try {
             URL aStatic = getClass().getClassLoader().getResource("static");
-
+            System.out.println(aStatic);
+            Path path = Paths.get(aStatic.getPath() + File.separator + "images");
+            if(Files.notExists(path)){
+                Files.createDirectory(path);
+            }
             String filePath = aStatic.getPath() + File.separator + "images" + File.separator + file.getOriginalFilename();
             Path fileName = getFileName(filePath);
             Files.copy(file.getInputStream(), fileName, StandardCopyOption.REPLACE_EXISTING);
