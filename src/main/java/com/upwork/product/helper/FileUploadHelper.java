@@ -15,16 +15,6 @@ import java.nio.file.StandardCopyOption;
 @Component
 public class FileUploadHelper {
 
-//    private static final String UPLOAD_DIR;
-//
-//    static {
-//        try {
-//            UPLOAD_DIR = new ClassPathResource("static/").getFile().getAbsolutePath();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
     public String uploadFile(MultipartFile file) {
         try {
             URL aStatic = getClass().getClassLoader().getResource("static");
@@ -34,7 +24,7 @@ public class FileUploadHelper {
             Files.copy(file.getInputStream(), fileName, StandardCopyOption.REPLACE_EXISTING);
             return "/images" + File.separator + file.getOriginalFilename();
         } catch (Exception e) {
-            throw new RuntimeException("Error while upload image");
+            throw new RuntimeException("Error while upload image", e);
         }
     }
 
@@ -42,9 +32,12 @@ public class FileUploadHelper {
         try {
             URL aStatic = getClass().getClassLoader().getResource("static");
             String filePath = aStatic.getPath() + File.separator + path;
-            Files.delete(getFileName(filePath));
+            File file = new File(filePath);
+            if(file.exists() && !file.isDirectory()){
+                Files.delete(getFileName(filePath));
+            }
         } catch (Exception ex) {
-            throw new RuntimeException("Error while deleting image");
+            throw new RuntimeException("Error while deleting image", ex);
         }
         return false;
     }
