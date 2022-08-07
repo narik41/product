@@ -19,10 +19,10 @@ public class CreateProductRequest {
     @NotBlank(message = "Please select a product category")
     private String productCategory;
 
-    @NotEmpty(message = "Please select a brand")
+    @NotBlank(message = "Please select a brand")
     private String brand;
 
-    @NotEmpty(message = "Please select where the product is made in")
+    @NotBlank(message = "Please select where the product is made in")
     private String madeIn;
 
     @NotNull(message = "Please input available items")

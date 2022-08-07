@@ -2,6 +2,7 @@ package com.upwork.product.product;
 
 import com.upwork.product.category.ProductCategory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +26,21 @@ public class ProductController {
     }
 
     @GetMapping(value = "/product", name = "index-product")
-    public ModelAndView index() {
-        ModelAndView modelAndView = new ModelAndView("product/index.html");
-        modelAndView.addObject("products", productService.getProducts());
-        modelAndView.addObject(TITLE, "Product List");
-        return modelAndView;
+    public ModelAndView index(@RequestParam(defaultValue = "1") Integer page,
+                              @RequestParam(defaultValue ="10") Integer size,
+                              @RequestParam(defaultValue = "") String searchText,
+                              ModelAndView model) {
+
+        Page<Product> result = productService.getAll(page - 1, size, searchText);
+        Integer startIndex = (page - 1) * size + 1 ;
+
+        model.setViewName("product/index.html");
+        model.addObject("products", result.getContent());
+        model.addObject(TITLE, "Product List");
+        model.addObject("totalPage", result.getTotalPages());
+        model.addObject("startIndex", startIndex);
+        model.addObject("currentPage", page);
+        return model;
     }
 
     @GetMapping(value = "/product/create", name = "create-product")
@@ -54,6 +65,8 @@ public class ProductController {
             ModelAndView modelAndView = new ModelAndView("product/create.html");
             modelAndView.addObject("productCategories", productCategories);
             modelAndView.addObject("product", product);
+            modelAndView.addObject("brands", productService.getBrands());
+            modelAndView.addObject("countries", productService.getCountries());
             modelAndView.addObject(TITLE, "Create Product");
             return modelAndView;
         }
