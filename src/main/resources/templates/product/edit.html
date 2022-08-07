@@ -8,7 +8,16 @@
     <div class="container px-4 px-lg-5 pb-5 pt-5">
         <h1 class="display-5 fw-bold">Update Product</h1>
         <p class="col-md-8 fs-6 fw-lighter">Update the product details</p>
-        <form th:object="${product}"
+        <div th:if="${product.name == null}" class="wrapper row">
+            <div class="preview col-md-12">
+                <div class="text-center">
+                    <p>Product not found to edit</p>
+                </div>
+            </div>
+
+        </div>
+        <form th:if="${product.name != null}"
+                th:object="${product}"
               name="create-product"
               th:method="PUT"
               th:action="@{/product/{id}/update(id=${id})}"

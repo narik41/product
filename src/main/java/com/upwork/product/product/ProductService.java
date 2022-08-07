@@ -151,14 +151,15 @@ public class ProductService {
     CreateProductRequest getProductForEdit(String productId){
         Product byId = this.getById(productId);
         CreateProductRequest productRequest = new CreateProductRequest();
-        productRequest.setName(byId.getName());
-        productRequest.setDescription(byId.getDescription());
-        productRequest.setBrand(byId.getBrand().getId());
-        productRequest.setProductCategory(byId.getProductCategory().getId());
-        productRequest.setMadeIn(byId.getCountry().getId());
-        productRequest.setPrice(byId.getPrice());
-        productRequest.setAvailableItems(byId.getAvailableItems());
-
+        if(byId.getName() != null){
+            productRequest.setName(byId.getName());
+            productRequest.setDescription(byId.getDescription());
+            productRequest.setBrand(byId.getBrand().getId());
+            productRequest.setProductCategory(byId.getProductCategory().getId());
+            productRequest.setMadeIn(byId.getCountry().getId());
+            productRequest.setPrice(byId.getPrice());
+            productRequest.setAvailableItems(byId.getAvailableItems());
+        }
         return productRequest;
     }
 }
