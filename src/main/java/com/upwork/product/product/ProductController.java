@@ -44,15 +44,15 @@ public class ProductController {
     }
 
     @GetMapping(value = "/product/create", name = "create-product")
-    public ModelAndView create(CreateProductRequest productRequest) {
+    public ModelAndView create(CreateProductRequest productRequest, ModelAndView model) {
         List<ProductCategory> productCategories = productService.getProductCategories();
-        ModelAndView modelAndView = new ModelAndView("product/create.html");
-        modelAndView.addObject("productCategories", productCategories);
-        modelAndView.addObject("product", productRequest);
-        modelAndView.addObject("brands", productService.getBrands());
-        modelAndView.addObject("countries", productService.getCountries());
-        modelAndView.addObject(TITLE, "Create Product");
-        return modelAndView;
+        model.setViewName("product/create.html");
+        model.addObject("productCategories", productCategories);
+        model.addObject("product", productRequest);
+        model.addObject("brands", productService.getBrands());
+        model.addObject("countries", productService.getCountries());
+        model.addObject(TITLE, "Create Product");
+        return model;
     }
 
     @PostMapping(value = "/product", name = "store-product")
@@ -88,26 +88,16 @@ public class ProductController {
     }
 
     @GetMapping(value = "/product/{id}/edit", name = "edit-product")
-    public ModelAndView edit(@PathVariable("id") String productId,
-                             CreateProductRequest productRequest) {
-        Product byId = productService.getById(productId);
-        productRequest.setName(byId.getName());
-        productRequest.setDescription(byId.getDescription());
-        productRequest.setBrand(byId.getBrand().getId());
-        productRequest.setProductCategory(byId.getProductCategory().getId());
-        productRequest.setMadeIn(byId.getCountry().getId());
-        productRequest.setPrice(byId.getPrice());
-        productRequest.setAvailableItems(byId.getAvailableItems());
+    public ModelAndView edit(@PathVariable("id") String productId,  ModelAndView model ) {
 
-        List<ProductCategory> productCategories = productService.getProductCategories();
-        ModelAndView modelAndView = new ModelAndView("product/edit.html");
-        modelAndView.addObject("productCategories", productCategories);
-        modelAndView.addObject("brands", productService.getBrands());
-        modelAndView.addObject("countries", productService.getCountries());
-        modelAndView.addObject("product", productRequest);
-        modelAndView.addObject("id", productId);
-        modelAndView.addObject(TITLE, "Update Product");
-        return modelAndView;
+        model.setViewName("product/edit.html");
+        model.addObject("productCategories", productService.getProductCategories());
+        model.addObject("brands", productService.getBrands());
+        model.addObject("countries", productService.getCountries());
+        model.addObject("product", productService.getProductForEdit(productId));
+        model.addObject("id", productId);
+        model.addObject(TITLE, "Update Product");
+        return model;
     }
 
     @PutMapping(value = "/product/{id}/update", name = "update-product")

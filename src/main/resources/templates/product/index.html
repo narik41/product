@@ -15,7 +15,8 @@
         <nav class="navbar bg-light">
             <div class="container-fluid p-0">
                 <form class="d-flex" role="search">
-                    <input class="form-control me-2" name="searchText" type="search" placeholder="Search" aria-label="Search">
+                    <input class="form-control me-2" name="searchText" type="search" placeholder="Search"
+                           aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>
@@ -23,52 +24,53 @@
         <div class="table-responsive">
             <table class="table table table-bordered table-sm text-center">
                 <thead>
-                    <tr>
-                        <th scope="col">S.N</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Brand</th>
-                        <th scope="col">Made in</th>
-                        <th scope="col">Available</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Action</th>
-                    </tr>
+                <tr>
+                    <th scope="col">S.N</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Made in</th>
+                    <th scope="col">Available</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Action</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr th:unless="${#lists.isEmpty(products)}" th:each="product: ${products}">
-                        <th th:text="${__${startIndex}__+__${productStat.index}__}"></th>
-                        <td th:text="${product.name}"></td>
-                        <td >
-                            <span th:if="${product.productCategory}" th:text="${product.productCategory.name}"></span>
-                        </td>
-                        <td >
-                            <span th:text="${product.brand.name}" class="badge text-bg-primary"></span>
-                        </td>
-                        <td th:text="${product.country.name}"></td>
-                        <td  th:text="${product.availableItems}"></td>
-                        <td  th:text="${product.price}"></td>
-                        <td >
-                            <a  th:href="@{/product/{id}(id=${product.id})}" class="btn btn-sm btn-primary">View</a>
-                            <a  th:href="@{/product/{id}/edit(id=${product.id})}" class="btn btn-success btn-sm">Edit</a>
+                <tr th:unless="${#lists.isEmpty(products)}" th:each="product: ${products}">
+                    <th th:text="${__${startIndex}__+__${productStat.index}__}"></th>
+                    <td th:text="${product.name}"></td>
+                    <td>
+                        <span th:if="${product.productCategory}" th:text="${product.productCategory.name}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${product.brand.name}" class="badge text-bg-primary"></span>
+                    </td>
+                    <td>
+                        <span th:text="${product.country.name}"></span>
+                    </td>
+                    <td th:text="${product.availableItems}"></td>
+                    <td th:text="'Rs ' + ${product.price}"></td>
+                    <td>
+                        <a th:href="@{/product/{id}(id=${product.id})}" class="btn btn-sm btn-primary">View</a>
+                        <a th:href="@{/product/{id}/edit(id=${product.id})}" class="btn btn-success btn-sm">Edit</a>
 
-                            <a  data-title="Delete Product" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal" class="btn btn-danger btn-sm"
-                                data-message="Are you sure you want to delete the product?"
-                                th:data-href="@{/product/{id}/delete(id=${product.id})}"
-                                data-delete-token="${_csrf.parameterName}">
-                                Delete
-                            </a>
-
-                        </td>
-                    </tr>
-                    <tr th:if="${#lists.isEmpty(products)}">
-                        <td class="text-center text-muted" colspan="8">No data found</td>
-                    </tr>
+                        <a data-title="Delete Product" data-bs-toggle="modal"
+                           data-bs-target="#deleteModal" class="btn btn-danger btn-sm"
+                           data-message="Are you sure you want to delete the product?"
+                           th:data-href="@{/product/{id}/delete(id=${product.id})}"
+                           data-delete-token="${_csrf.parameterName}">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(products)}">
+                    <td class="text-center text-muted" colspan="8">No data found</td>
+                </tr>
 
                 </tbody>
             </table>
 
-            <nav th:unless="${#lists.isEmpty(products)}"  aria-label="Page navigation example">
+            <nav th:unless="${#lists.isEmpty(products)}" aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item" th:classappend="${currentPage == 1 ? 'disabled':''}">
                         <a th:href="@{/product(page=${currentPage-1})}" class="page-link" aria-label="Previous"
@@ -77,7 +79,8 @@
                         </a>
                     </li>
 
-                    <li th:each="i : ${#numbers.sequence(1, __${totalPage}__)}" class="page-item " th:classappend="${__${i}__ == __${currentPage}__} ? 'active' : ''" aria-current="page">
+                    <li th:each="i : ${#numbers.sequence(1, __${totalPage}__)}" class="page-item "
+                        th:classappend="${__${i}__ == __${currentPage}__} ? 'active' : ''" aria-current="page">
                         <a class="page-link" th:text="${i}"
                            th:href="${#mvc.url('index-product').arg(0,__${i}__).build()}"> <span class="sr-only">(current)</span></a>
                     </li>
@@ -105,7 +108,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button   type="button" class="btn btn-danger btn-ok">Delete</button>
+                            <button type="button" class="btn btn-danger btn-ok">Delete</button>
                         </div>
                     </div>
                 </div>

@@ -51,21 +51,15 @@ public class ProductService {
         return brandRepository.findAll();
     }
 
-    public List<Product> getProducts(){
-        return productRepository.findAll();
-    }
-
-    public Page<Product> getAll(Integer page, Integer size, String name){
+    public Page<Product> getAll(Integer page, Integer size, String name) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
-        Page<Product> result = productRepository.findByNameIgnoreCaseContaining(name, pageable);
-        return result ;
+        return productRepository.findByNameIgnoreCaseContaining(name, pageable);
 
     }
 
     public void save(CreateProductRequest createProductRequest) {
 
-        String filepath = fileUploadHelper.uploadFile(createProductRequest.getImage());
         ProductCategory productCategory = new ProductCategory();
         productCategory.setId(createProductRequest.getProductCategory());
 
@@ -83,17 +77,22 @@ public class ProductService {
         product.setCountry(country);
         product.setAvailableItems(createProductRequest.getAvailableItems());
         product.setPrice(createProductRequest.getPrice());
-        product.setImage(filepath);
+        product.setCreatedAt(System.currentTimeMillis());
+        product.setUpdatedAt(System.currentTimeMillis());
+
+        if (!createProductRequest.getImage().isEmpty()) {
+            String filepath = fileUploadHelper.uploadFile(createProductRequest.getImage());
+            product.setImage(filepath);
+        }
 
         productRepository.save(product);
     }
 
-    public void update(String productId,
-                       CreateProductRequest createProductRequest) {
+    public void update(String productId, CreateProductRequest createProductRequest) {
 
         Product product = getById(productId);
 
-        if(createProductRequest.getImage() != null){
+        if (!createProductRequest.getImage().isEmpty()) {
             String filepath = fileUploadHelper.uploadFile(createProductRequest.getImage());
             product.setImage(filepath);
         }
@@ -114,26 +113,52 @@ public class ProductService {
         product.setCountry(country);
         product.setAvailableItems(createProductRequest.getAvailableItems());
         product.setPrice(createProductRequest.getPrice());
-
+        product.setUpdatedAt(System.currentTimeMillis());
         productRepository.save(product);
     }
 
-    Product getById(String productId){
+    /**
+     * Get the product details by id
+     *
+     * @param productId
+     * @return
+     */
+    Product getById(String productId) {
         Optional<Product> byId = productRepository.findById(productId);
-        if(byId.isEmpty()){
+        if (byId.isEmpty()) {
             return byId.orElse(new Product());
         }
 
         return byId.get();
     }
 
-    boolean delete(String productId){
+    /**
+     * Delete the product details and the image of the product
+     *
+     * @param productId product id
+     * @return
+     */
+    boolean delete(String productId) {
         Product byId = getById(productId);
-        if(byId.getId() != null){
+        if (byId.getId() != null) {
             productRepository.delete(byId);
             this.fileUploadHelper.deleteFile(byId.getImage());
             return true;
         }
         return false;
+    }
+
+    CreateProductRequest getProductForEdit(String productId){
+        Product byId = this.getById(productId);
+        CreateProductRequest productRequest = new CreateProductRequest();
+        productRequest.setName(byId.getName());
+        productRequest.setDescription(byId.getDescription());
+        productRequest.setBrand(byId.getBrand().getId());
+        productRequest.setProductCategory(byId.getProductCategory().getId());
+        productRequest.setMadeIn(byId.getCountry().getId());
+        productRequest.setPrice(byId.getPrice());
+        productRequest.setAvailableItems(byId.getAvailableItems());
+
+        return productRequest;
     }
 }

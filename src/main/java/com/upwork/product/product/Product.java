@@ -7,6 +7,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "products")
@@ -19,7 +20,7 @@ public class Product {
             name = "UUID",
             strategy = "uuid"
     )
-    @Column(name = "id", columnDefinition = "CHAR(36)", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false)
     private String id;
 
     @Column(name = "name", nullable = false)
@@ -34,14 +35,20 @@ public class Product {
     private Double price;
 
     @ManyToOne
-    @JoinColumn(name = "product_category_id", nullable = false)
+    @JoinColumn(name = "product_category_id")
     private ProductCategory productCategory;
 
     @ManyToOne
-    @JoinColumn(name = "brand_id", nullable = false)
+    @JoinColumn(name = "brand_id")
     private Brand brand;
 
     @ManyToOne
-    @JoinColumn(name = "country_id", nullable = false)
+    @JoinColumn(name = "country_id")
     private Country country;
+
+    @Column(name = "created_at", updatable = false)
+    private Long createdAt ;
+
+    @Column(name = "updated_at")
+    private Long updatedAt;
 }

@@ -28,16 +28,14 @@ public class FileUploadHelper {
     }
 
     public String uploadFile(MultipartFile file) {
-        String filePath = "";
         try {
-            filePath = UPLOAD_DIR + File.separator + file.getOriginalFilename();
+            String filePath = UPLOAD_DIR + File.separator + file.getOriginalFilename();
             Path fileName = getFileName(filePath);
             Files.copy(file.getInputStream(), fileName, StandardCopyOption.REPLACE_EXISTING);
-            return "images" + File.separator + file.getOriginalFilename();
+            return "/images" + File.separator + file.getOriginalFilename();
         } catch (Exception e) {
-
+            throw new RuntimeException("Error while upload image");
         }
-        return filePath;
     }
 
     public boolean deleteFile(String path) {
@@ -45,7 +43,7 @@ public class FileUploadHelper {
             String filePath = UPLOAD_DIR + File.separator + path;
             Files.delete(getFileName(filePath));
         } catch (Exception ex) {
-
+            throw new RuntimeException("Error while deleting image");
         }
         return false;
     }
