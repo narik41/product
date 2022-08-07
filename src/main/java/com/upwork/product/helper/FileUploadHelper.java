@@ -18,7 +18,7 @@ public class FileUploadHelper {
 
     static {
         try {
-            UPLOAD_DIR = new ClassPathResource("static").getFile().getAbsolutePath();
+            UPLOAD_DIR = new ClassPathResource("/static").getFile().getAbsolutePath();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
