@@ -14,4 +14,5 @@ public class HomeController {
         modelAndView.addObject("title", "Light Product home");
         return modelAndView;
     }
+
 }

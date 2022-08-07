@@ -16,8 +16,8 @@
             <column name="description" type="TEXT" />
             <column name="available_items" type="INT" />
             <column name="price" type="DOUBLE" />
-            <column name="brand" type="CHAR(36)" />
-            <column name="made_in" type="CHAR(36)" />
+            <column name="brand_id" type="CHAR(36)" />
+            <column name="country_id" type="CHAR(36)" />
             <column name="image" type="varchar(1024)" />
             <column name="created_at" type="BIGINT" />
             <column name="updated_at" type="BIGINT" />
