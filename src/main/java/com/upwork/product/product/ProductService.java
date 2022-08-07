@@ -1,7 +1,12 @@
 package com.upwork.product.product;
 
+import com.upwork.product.brand.Brand;
+import com.upwork.product.brand.BrandRepository;
 import com.upwork.product.category.ProductCategory;
 import com.upwork.product.category.ProductCategoryRepository;
+import com.upwork.product.country.Country;
+import com.upwork.product.country.CountryRepository;
+import com.upwork.product.helper.FileUploadHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,16 +18,33 @@ public class ProductService {
 
     private final ProductCategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final CountryRepository countryRepository;
+    private final BrandRepository brandRepository;
+    private final FileUploadHelper fileUploadHelper;
 
     @Autowired
     public ProductService(ProductCategoryRepository categoryRepository,
-                          ProductRepository productRepository) {
+                          ProductRepository productRepository,
+                          CountryRepository countryRepository,
+                          BrandRepository brandRepository,
+                          FileUploadHelper fileUploadHelper) {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
+        this.brandRepository = brandRepository;
+        this.countryRepository = countryRepository;
+        this.fileUploadHelper = fileUploadHelper;
     }
 
     public List<ProductCategory> getProductCategories() {
         return categoryRepository.findAll();
+    }
+
+    public List<Country> getCountries() {
+        return countryRepository.findAll();
+    }
+
+    public List<Brand> getBrands() {
+        return brandRepository.findAll();
     }
 
     public List<Product> getProducts(){
@@ -31,13 +53,55 @@ public class ProductService {
 
     public void save(CreateProductRequest createProductRequest) {
 
+        String filepath = fileUploadHelper.uploadFile(createProductRequest.getImage());
         ProductCategory productCategory = new ProductCategory();
         productCategory.setId(createProductRequest.getProductCategory());
+
+        Brand brand = new Brand();
+        brand.setId(createProductRequest.getBrand());
+
+        Country country = new Country();
+        country.setId(createProductRequest.getMadeIn());
 
         Product product = new Product();
         product.setName(createProductRequest.getName());
         product.setDescription(createProductRequest.getDescription());
         product.setProductCategory(productCategory);
+        product.setBrand(brand);
+        product.setCountry(country);
+        product.setAvailableItems(createProductRequest.getAvailableItems());
+        product.setPrice(createProductRequest.getPrice());
+        product.setImage(filepath);
+
+        productRepository.save(product);
+    }
+
+    public void update(String productId,
+                       CreateProductRequest createProductRequest) {
+
+        Product product = getById(productId);
+
+        if(createProductRequest.getImage() != null){
+            String filepath = fileUploadHelper.uploadFile(createProductRequest.getImage());
+            product.setImage(filepath);
+        }
+
+        ProductCategory productCategory = new ProductCategory();
+        productCategory.setId(createProductRequest.getProductCategory());
+
+        Brand brand = new Brand();
+        brand.setId(createProductRequest.getBrand());
+
+        Country country = new Country();
+        country.setId(createProductRequest.getMadeIn());
+
+        product.setName(createProductRequest.getName());
+        product.setDescription(createProductRequest.getDescription());
+        product.setProductCategory(productCategory);
+        product.setBrand(brand);
+        product.setCountry(country);
+        product.setAvailableItems(createProductRequest.getAvailableItems());
+        product.setPrice(createProductRequest.getPrice());
 
         productRepository.save(product);
     }
@@ -51,10 +115,13 @@ public class ProductService {
         return byId.get();
     }
 
-    void delete(String productId){
+    boolean delete(String productId){
         Product byId = getById(productId);
         if(byId.getId() != null){
             productRepository.delete(byId);
+            this.fileUploadHelper.deleteFile(byId.getImage());
+            return true;
         }
+        return false;
     }
 }

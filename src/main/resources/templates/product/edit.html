@@ -6,11 +6,12 @@
 <body>
 <div layout:fragment="content">
     <div class="container px-4 px-lg-5 pb-5 pt-5">
-        <h1 class="display-5 fw-bold">Create</h1>
-        <p class="col-md-8 fs-4">Please fill up the form to create a product</p>
+        <h1 class="display-5 fw-bold">Update</h1>
+        <p class="col-md-8 fs-4">Update the product details</p>
         <form th:object="${product}"
-              name="create-product" method="POST"
-              th:action="${#mvc.url('store-product').build()}"
+              name="create-product"
+              th:method="PUT"
+              th:action="@{/product/{id}/update(id=${id})}"
               enctype="multipart/form-data">
 
             <div class="mb-3 ">
@@ -118,6 +119,7 @@
             <div class="mb-3">
                 <label for="formFile" class="form-label">Product image</label>
                 <input th:field="*{image}" class="form-control" type="file" id="formFile">
+                <span>Upload new images will replace the previous image.</span>
             </div>
 
             <div class="mb-3">

@@ -5,9 +5,13 @@
 
 <body>
 <div layout:fragment="content">
-    <div class="container-fluid ">
+    <div class="container px-4 px-lg-5 pb-5 pt-5">
+
+        <div th:if="${success_message}" th:text="${success_message}" class="alert alert-primary" role="alert"></div>
+        <div th:if="${error_message}" th:text="${error_message}" class="alert alert-danger" role="alert"></div>
+
         <h1 class="display-5 fw-bold">Product List</h1>
-        <p class="col-md-8 fs-4">Please fill up the form to create a product</p>
+        <p class="col-md-8 fs-4">List of product that you have added.</p>
         <div class="table-responsive">
             <table class="table table-sm">
                 <thead>
@@ -15,7 +19,10 @@
                         <th scope="col">S.N</th>
                         <th scope="col">Name</th>
                         <th scope="col">Category</th>
-                        <th scope="col">Description</th>
+                        <th scope="col">Brand</th>
+                        <th scope="col">Made in</th>
+                        <th scope="col">Available</th>
+                        <th scope="col">Price</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -26,10 +33,15 @@
                         <td >
                             <span th:if="${product.productCategory}" th:text="${product.productCategory.name}"></span>
                         </td>
-                        <td th:text="${product.description}">@mdo</td>
                         <td >
-                            <a type="button" th:href="@{/product/{id}(id=${product.id})}" class="btn btn-sm btn-primary">View</a>
-                            <button type="button" class="btn btn-info btn-sm">Edit</button>
+                            <span th:text="${product.brand.name}" class="badge text-bg-primary"></span>
+                        </td>
+                        <td th:text="${product.country.name}"></td>
+                        <td  th:text="${product.availableItems}"></td>
+                        <td  th:text="${product.price}"></td>
+                        <td >
+                            <a  th:href="@{/product/{id}(id=${product.id})}" class="btn btn-sm btn-primary">View</a>
+                            <a  th:href="@{/product/{id}/edit(id=${product.id})}" class="btn btn-success btn-sm">Edit</a>
 
                             <a  data-title="Delete Product" data-bs-toggle="modal"
                                 data-bs-target="#deleteModal" class="btn btn-danger btn-sm"
