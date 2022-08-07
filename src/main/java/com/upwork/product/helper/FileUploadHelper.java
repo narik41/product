@@ -18,7 +18,7 @@ public class FileUploadHelper {
 
     static {
         try {
-            UPLOAD_DIR = new ClassPathResource("static/images/").getFile().getAbsolutePath();
+            UPLOAD_DIR = new ClassPathResource("static").getFile().getAbsolutePath();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -29,7 +29,7 @@ public class FileUploadHelper {
 
     public String uploadFile(MultipartFile file) {
         try {
-            String filePath = UPLOAD_DIR + File.separator + file.getOriginalFilename();
+            String filePath = UPLOAD_DIR + File.separator + "images" + File.separator + file.getOriginalFilename();
             Path fileName = getFileName(filePath);
             Files.copy(file.getInputStream(), fileName, StandardCopyOption.REPLACE_EXISTING);
             return "/images" + File.separator + file.getOriginalFilename();
